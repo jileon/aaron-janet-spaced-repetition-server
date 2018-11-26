@@ -1,6 +1,5 @@
 const express = require("express");
 const User = require("../models/user");
-const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -93,7 +92,10 @@ router.post("/", (req, res, next) => {
     .then(digest => {
       return User.create({
         username,
-        password: digest
+        password: digest,
+        questions: 0,
+        correct: 0,
+        incorrect: 0
       });
     })
     .then(result => {
@@ -108,6 +110,37 @@ router.post("/", (req, res, next) => {
         err.status = 400;
       }
       next(err);
+    });
+});
+
+router.get("/", (req, res) => {
+  console.log(req.user)
+  let userId = req.user.id
+  Stat.find({userId: userId})
+    .select("username questions correct incorrect")
+    .then(results => {
+      console.log(results);
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+router.put("/:id", (req, res, next) => {
+  const id = req.params.id;
+  const newObj = {
+    questions: req.body.questions,
+    correct: req.body.correct,
+    incorrect: req.body.incorrect
+  };
+  return User.findOneAndUpdate({ _id: id }, newObj, { new: true })
+    .select("questions correct incorrect")
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      console.log(err);
     });
 });
 
