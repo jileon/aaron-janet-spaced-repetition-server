@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -5,8 +7,10 @@ const passport = require('passport');
 const localStrategy = require('./passport/local');
 const jwtStrategy = require('./passport/jwt');
 
+
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
+
 
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
@@ -19,9 +23,7 @@ app.use(
     skip: (req, res) => process.env.NODE_ENV === 'test'
   })
 );
-
 app.use(express.json())
-
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
@@ -30,6 +32,7 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
 
 app.use('/login', authRouter);
 app.use('/users', usersRouter);
