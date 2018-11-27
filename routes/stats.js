@@ -11,7 +11,6 @@ router.get("/", (req, res) => {
   console.log(req.user);
   let userId = req.user.id;
   Stat.find({ userId: userId })
-    .select("questions correct incorrect username")
     .then(results => {
       console.log(results);
       res.json(results);
@@ -111,7 +110,6 @@ router.put("/:id", (req, res, next) => {
     },
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
-    .select("questions correct incorrect")
     .then(results => {
       res.json(results);
     })
