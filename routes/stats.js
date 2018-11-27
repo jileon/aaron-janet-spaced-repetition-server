@@ -53,8 +53,8 @@ router.put("/:id", (req, res, next) => {
   
   const id = req.params.id;
   let userId = req.user.id;
-
-  if (req.body.correct === '1') {
+  console.log(req.body);
+  if (req.body.correct === '1' || req.body.correct === 1) {
     Stat.find({ userId: userId })
       .then(results => {
         let oldData = results[0];
@@ -75,7 +75,7 @@ router.put("/:id", (req, res, next) => {
           });
       });
   }
-  if (req.body.incorrect === '1') {
+  if (req.body.incorrect === '1' || req.body.incorrect === 1) {
     Stat.find({ userId: userId })
       .then(results => {
         let oldData = results[0];
