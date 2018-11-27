@@ -66,7 +66,7 @@ router.put("/:id", (req, res, next) => {
     q9: req.body.q9,
     q10: req.body.q10,
   };
-  return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
+  return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
     .then(results => {
       res.json(results);
     })
@@ -74,5 +74,25 @@ router.put("/:id", (req, res, next) => {
       console.log(err);
     });
 });
+
+
+// {
+// 	"questions": "10",
+//     "correct": "6",
+//     "incorrect": "4",
+//     "q1": "1",
+//     "q2": "1",
+//     "q3": "1",
+//     "q4": "1",
+//     "q5": "1",
+//     "q6": "1",
+//     "q7": "1",
+//     "q8": "1",
+//     "q9": "1",
+//     "q10": "1"
+// }
+
+// "username": "testaaron",
+// "id": "5bfd99faa841b737c0f339f2"
 
 module.exports = router;
