@@ -23,36 +23,16 @@ router.post("/", (req, res, next) => {
     questions: 0,
     correct: 0,
     incorrect: 0,
-    q1: {
-      M: 1
-    },
-    q2: {
-      M: 1
-    },
-    q3: {
-      M: 1
-    },
-    q4: {
-      M: 1
-    },
-    q5: {
-      M: 1
-    },
-    q6: {
-      M: 1
-    },
-    q7: {
-      M: 1
-    },
-    q8: {
-      M: 1
-    },
-    q9: {
-      M: 1
-    },
-    q10: {
-      M: 1
-    },
+    q1: 1,
+    q2: 1,
+    q3: 1,
+    q4: 1,
+    q5: 1,
+    q6: 1,
+    q7: 1,
+    q8: 1,
+    q9: 1,
+    q10: 1,
     userId: req.body.userId,
     username: req.body.username
   };
@@ -75,36 +55,16 @@ router.put("/:id", (req, res, next) => {
     questions: req.body.questions,
     correct: req.body.correct,
     incorrect: req.body.incorrect,
-    q1: {
-      M: req.body.q1.M
-    },
-    q2: {
-      M: req.body.q2.M
-    },
-    q3: {
-      M: req.body.q3.M
-    },
-    q4: {
-      M: req.body.q4.M
-    },
-    q5: {
-      M: req.body.q5.M
-    },
-    q6: {
-      M: req.body.q6.M
-    },
-    q7: {
-      M: req.body.q7.M
-    },
-    q8: {
-      M: req.body.q8.M
-    },
-    q9: {
-      M: req.body.q9.M
-    },
-    q10: {
-      M: req.body.q10.M
-    },
+    q1: req.body.q1,
+    q2: req.body.q2,
+    q3: req.body.q3,
+    q4: req.body.q4,
+    q5: req.body.q5,
+    q6: req.body.q6,
+    q7: req.body.q7,
+    q8: req.body.q8,
+    q9: req.body.q9,
+    q10: req.body.q10,
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
     .then(results => {
