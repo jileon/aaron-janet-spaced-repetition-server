@@ -50,31 +50,53 @@ router.post("/", (req, res, next) => {
 });
 
 router.put("/:id", (req, res, next) => {
+  
   const id = req.params.id;
-  const newObj = {
-    questions: req.body.questions,
-    correct: req.body.correct,
-    incorrect: req.body.incorrect
-    // q1: req.body.q1,
-    // q2: req.body.q2,
-    // q3: req.body.q3,
-    // q4: req.body.q4,
-    // q5: req.body.q5,
-    // q6: req.body.q6,
-    // q7: req.body.q7,
-    // q8: req.body.q8,
-    // q9: req.body.q9,
-    // q10: req.body.q10,
-  };
-  return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
-    .then(results => {
-      res.json(results);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
+  let userId = req.user.id;
 
+  if (req.body.correct === '1') {
+    Stat.find({ userId: userId })
+      .then(results => {
+        let oldData = results[0];
+        return oldData;
+      })
+      .then(oldData => {
+        let newObj = {
+          questions: oldData.questions + 1,
+          correct: oldData.correct + 1,
+          incorrect: oldData.incorrect
+        };
+        return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
+          .then(results => {
+            res.json(results);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+  }
+  if (req.body.incorrect === '1') {
+    Stat.find({ userId: userId })
+      .then(results => {
+        let oldData = results[0];
+        return oldData;
+      })
+      .then(oldData => {
+        let newObj = {
+          questions: oldData.questions + 1,
+          correct: oldData.correct,
+          incorrect: oldData.incorrect + 1
+        };
+        return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
+          .then(results => {
+            res.json(results);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+  }
+});
 
 // {
 // 	"questions": "10",
