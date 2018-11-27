@@ -5,7 +5,6 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Question.find()
     .then(results => {
-      console.log(results);
       res.json(results);
     })
     .catch(err => {

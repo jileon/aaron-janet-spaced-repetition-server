@@ -48,7 +48,7 @@ router.post("/", (req, res, next) => {
       min: 1
     },
     password: {
-      min: 5,
+      min: 10,
       max: 72
     }
   };

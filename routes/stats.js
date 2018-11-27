@@ -8,11 +8,9 @@ router.use(
 );
 
 router.get("/", (req, res) => {
-  console.log(req.user);
   let userId = req.user.id;
   Stat.find({ userId: userId })
     .then(results => {
-      console.log(results);
       res.json(results);
     })
     .catch(err => {
@@ -21,7 +19,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
-  
   const newObj = {
     questions: 0,
     correct: 0,
