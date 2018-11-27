@@ -110,7 +110,6 @@ router.put("/:id", (req, res, next) => {
     },
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
-    .select("questions correct incorrect")
     .then(results => {
       res.json(results);
     })
