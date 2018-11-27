@@ -11,7 +11,6 @@ router.get("/", (req, res) => {
   console.log(req.user);
   let userId = req.user.id;
   Stat.find({ userId: userId })
-    .select("questions correct incorrect username")
     .then(results => {
       console.log(results);
       res.json(results);
