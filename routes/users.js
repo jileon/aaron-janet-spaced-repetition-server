@@ -114,7 +114,8 @@ router.post("/", (req, res, next) => {
 });
 
 router.get("/", (req, res) => {
-  console.log(req.user)
+  console.log(req.user);
+  console.log("hello")
   let userId = req.user.id
   Stat.find({userId: userId})
     .select("username questions correct incorrect")
