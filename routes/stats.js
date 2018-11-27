@@ -37,6 +37,8 @@ router.post("/", (req, res, next) => {
     username: req.body.username
   };
 
+  // 5bfd97afd9a24a001649dd30
+
   return Stat.create(newObj)
     .then(results => {
       res.location(`${req.originalUrl}/${results.id}`);
@@ -67,6 +69,7 @@ router.put("/:id", (req, res, next) => {
     q10: req.body.q10,
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
+    .select("questions correct incorrect q1 q2 q3 q4 q5 q6 q7 q8 q9 q10")
     .then(results => {
       res.json(results);
     })
