@@ -155,7 +155,7 @@ router.put("/:id", (req, res, next) => {
     Stat.findOne({ userId: userId })
       .then(oldData => {
         let questions = oldData.questions;
-        let newNext = Math.min(req.body.question.memoryStrength * 2 + 1, 9);
+        let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
         // if (newNext === oldData.head) {
         //   newNext = newNext + 1;
         // }
