@@ -1,19 +1,21 @@
 const mongoose = require("mongoose");
 
 const statSchema = new mongoose.Schema({
-  questions: { type: Number, required: true },
   correct: { type: Number, required: true },
   incorrect: { type: Number, required: true },
-  // q1: { type: Number, required: true },
-  // q2: { type: Number, required: true },
-  // q3: { type: Number, required: true },
-  // q4: { type: Number, required: true },
-  // q5: { type: Number, required: true },
-  // q6: { type: Number, required: true },
-  // q7: { type: Number, required: true },
-  // q8: { type: Number, required: true },
-  // q9: { type: Number, required: true },
-  // q10: { type: Number, required: true },
+  questions: [
+    {
+    _id: mongoose.Schema.Types.ObjectId,
+    question: String,
+    answer: String,
+    memoryStrength: Number,
+    next: Number
+    }
+  ],
+  head: {
+    type: Number,
+    default: 0
+  },
   username: {
     type: String,
     required: true,
