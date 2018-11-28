@@ -209,23 +209,49 @@ router.put("/:id", (req, res, next) => {
   }
   if (req.body.incorrect === "1" || req.body.incorrect === 1) {
     Stat.find({ userId: userId })
-      .then(results => {
-        let oldData = results[0];
-        return oldData;
-      })
-      .then(oldData => {
-        let newObj = {
-          correct: oldData.correct,
-          incorrect: oldData.incorrect + 1
-        };
-        return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
-          .then(results => {
-            res.json(results);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+    .then(results => {
+      let oldData = results[0];
+      let questions = oldData.questions;
+      let newNext = 2;
+      if (newNext === oldData.head) {
+        newNext = newNext + 1;
+      }
+      let newHead = oldData.questions[oldData.head].next;
+      questions.forEach(item => {
+        if (item.next === newNext) {
+          item.next = req.body.head;
+          return;
+        }
       });
+      questions[req.body.head].next = newNext;
+      questions[req.body.head].memoryStrength = 1;
+      return {
+        oldData,
+        questions,
+        newHead
+      };
+    })
+    .then((results) => {
+      const { oldData, questions, newHead } = results;
+      let newObj = {
+        correct: oldData.correct,
+        incorrect: oldData.incorrect + 1,
+        questions,
+        head: newHead,
+        userId: oldData.userId,
+        username: oldData.username
+      };
+
+      Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
+        .then(results => {
+          res.json(results);
+        }) .then(() => {
+
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
   }
 });
 
