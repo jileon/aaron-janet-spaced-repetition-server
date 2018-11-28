@@ -156,8 +156,13 @@ router.put("/:id", (req, res, next) => {
     Stat.find({ userId: userId })
       .then(results => {
         let oldData = results[0];
+        console.log(oldData);
         let questions = oldData.questions;
         let newNext = nextValue();
+        if (newNext === oldData.head) {
+          newNext = newNext + 1;
+        }
+        let newHead = oldData.questions[oldData.head].next;
         questions.forEach(item => {
           if (item.next === newNext) {
             item.next = req.body.head;
@@ -168,16 +173,18 @@ router.put("/:id", (req, res, next) => {
         questions[req.body.head].memoryStrength = questions[req.body.head].memoryStrength * 2;
         return {
           oldData,
-          questions
+          questions,
+          newHead
         };
       })
       .then((results) => {
-        const { oldData, questions } = results;
+        const { oldData, questions, newHead } = results;
+        console.log(oldData);
         let newObj = {
           correct: oldData.correct + 1,
           incorrect: oldData.incorrect,
           questions,
-          head: oldData.questions[oldData.head].next,
+          head: newHead,
           userId: oldData.userId,
           username: oldData.username
         };
