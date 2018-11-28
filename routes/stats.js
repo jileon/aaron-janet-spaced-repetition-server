@@ -158,7 +158,7 @@ router.put("/:id", (req, res, next) => {
         let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
         let newHead = req.body.question.next;
 
-        if (newNext === oldData.head) {
+        if (newNext === newHead) {
           newHead = newHead + 1;
         }
     
@@ -166,7 +166,9 @@ router.put("/:id", (req, res, next) => {
             return item.next === newNext;
         });
 
-        question.next = req.body.head;
+        if (question){
+          question.next = req.body.head;
+        }
 
         questions[req.body.head].next = newNext;
         questions[req.body.head].memoryStrength = questions[req.body.head].memoryStrength * 2;
