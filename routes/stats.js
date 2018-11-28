@@ -158,7 +158,7 @@ router.put("/:id", (req, res, next) => {
         let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
         let newHead = req.body.question.next;
 
-        if (newNext === oldData.head) {
+        if (newNext === newHead) {
           newHead = newHead + 1;
         }
     
