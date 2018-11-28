@@ -13,20 +13,20 @@ router.get("/", (req, res, next) => {
   Stat.find({ userId: userId })
     .then(response => {
       let results = response[0];
-      let lowest = results.questions[0].memoryStrength;
-      let i = 0;
-      results.questions.forEach(item => {
-        if (item.memoryStrength < lowest) {
-          lowest = item.memoryStrength;
-          i = index;
-        }
-      })
-      
+      // let lowest = results.questions[0].memoryStrength;
+      // let i = 0;
+      // results.questions.forEach(item => {
+      //   if (item.memoryStrength < lowest) {
+      //     lowest = item.memoryStrength;
+      //     i = index;
+      //   }
+      // })
+      let q = results.head;
       return {
         correct: results.correct,
         incorrect: results.incorrect,
-        question: results.questions[i],
-        head: i,
+        question: results.questions[q],
+        head: results.head,
         userId: results.userId
       };
     })
@@ -168,7 +168,7 @@ router.put("/:id", (req, res, next) => {
         if (newNext === oldData.head) {
           newNext = newNext + 1;
         }
-        let newHead = oldData.questions[oldData.head].next;
+        let newHead = req.body.question.next;
         questions.forEach(item => {
           if (item.next === newNext) {
             item.next = req.body.head;
