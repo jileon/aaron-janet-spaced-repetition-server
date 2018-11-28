@@ -156,11 +156,12 @@ router.put("/:id", (req, res, next) => {
       .then(oldData => {
         let questions = oldData.questions;
         let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
-        if (newNext === oldData.head) {
-          newNext = newNext + 1;
-        }
         let newHead = req.body.question.next;
 
+        if (newNext === oldData.head) {
+          newHead = newHead + 1;
+        }
+    
         let question = questions.find(item => {
             return item.next === newNext;
         });
