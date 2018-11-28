@@ -151,41 +151,25 @@ router.put("/:id", (req, res, next) => {
   // replace that items next with original questions position in the array
 
   if (req.body.correct === "1" || req.body.correct === 1) {
-    function nextValue() {
-      if (req.body.question.memoryStrength * 2 > 8) {
-        return 9;
-      } else {
-        return req.body.question.memoryStrength * 2 + 1;
-      }
-    }
 
-    Stat.find({ userId: userId })
-      .then(results => {
-        let oldData = results[0];
-        console.log(oldData);
+    Stat.findOne({ userId: userId })
+      .then(oldData => {
         let questions = oldData.questions;
-        let newNext = nextValue();
+        let newNext = Math.min(req.body.question.memoryStrength * 2 + 1, 9);
         // if (newNext === oldData.head) {
         //   newNext = newNext + 1;
         // }
         let newHead = req.body.question.next;
-        questions.forEach(item => {
-          if (item.next === newNext) {
-            item.next = req.body.head;
-            return;
-          }
+
+        let question = questions.find(item => {
+            return item.next === newNext;
         });
+
+        question.next = req.body.head;
+
         questions[req.body.head].next = newNext;
         questions[req.body.head].memoryStrength = questions[req.body.head].memoryStrength * 2;
-        return {
-          oldData,
-          questions,
-          newHead
-        };
-      })
-      .then((results) => {
-        const { oldData, questions, newHead } = results;
-        console.log(oldData);
+
         let newObj = {
           correct: oldData.correct + 1,
           incorrect: oldData.incorrect,
