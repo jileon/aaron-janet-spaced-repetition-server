@@ -5,7 +5,7 @@ const statSchema = new mongoose.Schema({
   incorrect: { type: Number, required: true },
   questions: [
     {
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
     question: String,
     answer: String,
     memoryStrength: Number,
