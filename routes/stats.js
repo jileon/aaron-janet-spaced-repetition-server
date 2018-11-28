@@ -165,9 +165,9 @@ router.put("/:id", (req, res, next) => {
         console.log(oldData);
         let questions = oldData.questions;
         let newNext = nextValue();
-        if (newNext === oldData.head) {
-          newNext = newNext + 1;
-        }
+        // if (newNext === oldData.head) {
+        //   newNext = newNext + 1;
+        // }
         let newHead = req.body.question.next;
         questions.forEach(item => {
           if (item.next === newNext) {
@@ -219,9 +219,9 @@ router.put("/:id", (req, res, next) => {
       let oldData = results[0];
       let questions = oldData.questions;
       let newNext = 2;
-      if (newNext === oldData.head) {
-        newNext = newNext + 1;
-      }
+      // if (newNext === oldData.head) {
+      //   newNext = newNext + 1;
+      // }
       let newHead = oldData.questions[oldData.head].next;
       questions.forEach(item => {
         if (item.next === newNext) {
