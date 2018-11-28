@@ -13,12 +13,20 @@ router.get("/", (req, res, next) => {
   Stat.find({ userId: userId })
     .then(response => {
       let results = response[0];
-      let q = results.head;
+      let lowest = results.questions[0].memoryStrength;
+      let i = 0;
+      results.questions.forEach(item => {
+        if (item.memoryStrength < lowest) {
+          lowest = item.memoryStrength;
+          i = index;
+        }
+      })
+      
       return {
         correct: results.correct,
         incorrect: results.incorrect,
-        question: results.questions[q],
-        head: results.head,
+        question: results.questions[i],
+        head: i,
         userId: results.userId
       };
     })
@@ -34,8 +42,6 @@ router.get("/", (req, res, next) => {
 //   original q, memory * 2 and next is m + 1
 //   position 2, change next to position of original q
 
-// "username": "test12",
-//     "id": "5bfebd147eac3057a4d10ebc"
 
 router.post("/", (req, res, next) => {
   const newObj = {
