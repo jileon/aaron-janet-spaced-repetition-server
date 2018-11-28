@@ -15,7 +15,6 @@ const { dbConnect } = require('./db-mongoose');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const statsRouter = require('./routes/stats');
-const questionsRouter = require('./routes/questions');
 require('dotenv').config;
 
 const app = express();
@@ -38,7 +37,6 @@ app.use(
 app.use('/login', authRouter);
 app.use('/users', usersRouter);
 app.use('/stats', statsRouter);
-app.use('/questions', questionsRouter);
 
 
 app.use((err, req, res, next) => {
