@@ -7,10 +7,20 @@ router.use(
   passport.authenticate("jwt", { session: false, failWithError: true })
 );
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   let userId = req.user.id;
   Stat.find({ userId: userId })
-    .then(results => {
+    .then(response => {
+      let results = response[0]
+      let q = results.head;
+      return {
+        correct: results.correct,
+        incorrect: results.incorrect,
+        question: results.questions[q],
+        head: results.head,
+        userId: results.userId
+      }
+    }) .then (results => {
       res.json(results);
     })
     .catch(err => {
@@ -18,21 +28,82 @@ router.get("/", (req, res) => {
     });
 });
 
+
+//   head 1
+//   original q, memory * 2 and next is m + 1
+//   position 2, change next to position of original q
+
+// "username": "test12",
+//     "id": "5bfebd147eac3057a4d10ebc"
+
+
 router.post("/", (req, res, next) => {
   const newObj = {
-    questions: 0,
     correct: 0,
     incorrect: 0,
-    // q1: 1,
-    // q2: 1,
-    // q3: 1,
-    // q4: 1,
-    // q5: 1,
-    // q6: 1,
-    // q7: 1,
-    // q8: 1,
-    // q9: 1,
-    // q10: 1,
+    questions: [
+      {
+        question: "Buenos días",
+        answer: "Good morning",
+        memoryStrength: 1,
+        next: 1
+      },
+      {
+        question: "Hola",
+        answer: "Hello",
+        memoryStrength: 1,
+        next: 2
+      },
+      {
+        question: "Amor",
+        answer: "Love",
+        memoryStrength: 1,
+        next: 3
+      },
+      {
+        question: "Felicidad",
+        answer: "Happiness",
+        memoryStrength: 1,
+        next: 4
+      },
+      {
+        question: "Gato",
+        answer: "Cat",
+        memoryStrength: 1,
+        next: 5
+      },
+      {
+        question: "Perro",
+        answer: "Dog",
+        memoryStrength: 1,
+        next: 6
+      },
+      {
+        question: "Sí",
+        answer: "Yes",
+        memoryStrength: 1,
+        next: 7
+      },
+      {
+        question: "Gracias",
+        answer: "Thank you",
+        memoryStrength: 1,
+        next: 8
+      },
+      {
+        question: "Adiós",
+        answer: "Goodbye",
+        memoryStrength: 1,
+        next: 9
+      },
+      {
+        question: "Español",
+        answer: "Spanish",
+        memoryStrength: 1,
+        next: 0
+      }
+    ],
+    head: 0,
     userId: req.body.userId,
     username: req.body.username
   };
@@ -50,11 +121,20 @@ router.post("/", (req, res, next) => {
 });
 
 router.put("/:id", (req, res, next) => {
-  
   const id = req.params.id;
   let userId = req.user.id;
-  console.log(req.body);
-  if (req.body.correct === '1' || req.body.correct === 1) {
+
+  // correct, incorrect
+
+  // old head, old m and old next
+
+  // new head value, should be questions old next value
+  // question position and new m / next
+  
+  // whatever new next is, find the item that has that next
+  // replace that items next with original questions position in the array
+  
+  if (req.body.correct === "1" || req.body.correct === 1) {
     Stat.find({ userId: userId })
       .then(results => {
         let oldData = results[0];
@@ -62,10 +142,16 @@ router.put("/:id", (req, res, next) => {
       })
       .then(oldData => {
         let newObj = {
-          questions: oldData.questions + 1,
           correct: oldData.correct + 1,
           incorrect: oldData.incorrect
         };
+
+        // array position  === head
+        // new m value and next for that position  
+          // if correct,  m === old m + 1, next === m + 1
+          // if incorrect, m === 1, next === m + 1 (2), change B's next to 0
+        // new next for a different changed position 
+
         return Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
           .then(results => {
             res.json(results);
@@ -75,7 +161,7 @@ router.put("/:id", (req, res, next) => {
           });
       });
   }
-  if (req.body.incorrect === '1' || req.body.incorrect === 1) {
+  if (req.body.incorrect === "1" || req.body.incorrect === 1) {
     Stat.find({ userId: userId })
       .then(results => {
         let oldData = results[0];
@@ -83,7 +169,6 @@ router.put("/:id", (req, res, next) => {
       })
       .then(oldData => {
         let newObj = {
-          questions: oldData.questions + 1,
           correct: oldData.correct,
           incorrect: oldData.incorrect + 1
         };
@@ -97,24 +182,5 @@ router.put("/:id", (req, res, next) => {
       });
   }
 });
-
-// {
-// 	"questions": "10",
-//     "correct": "6",
-//     "incorrect": "4",
-//     "q1": "1",
-//     "q2": "1",
-//     "q3": "1",
-//     "q4": "1",
-//     "q5": "1",
-//     "q6": "1",
-//     "q7": "1",
-//     "q8": "1",
-//     "q9": "1",
-//     "q10": "1"
-// }
-
-// "username": "testaaron",
-// "id": "5bfd99faa841b737c0f339f2"
 
 module.exports = router;
