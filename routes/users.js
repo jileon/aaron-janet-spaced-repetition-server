@@ -80,7 +80,6 @@ router.post("/", (req, res, next) => {
     .count()
     .then(count => {
       if (count > 0) {
-        console.log(count)
         return res.status(422).json({
           code: 422,
           reason: "ValidationError",
