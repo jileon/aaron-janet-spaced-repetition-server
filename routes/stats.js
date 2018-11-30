@@ -147,8 +147,8 @@ router.put("/:id", (req, res, next) => {
   if (req.body.correct === "1" || req.body.correct === 1) {
     Stat.findOne({ userId: userId }).then(oldData => {
       let questions = oldData.questions;
-      let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
-      let newHead = Math.min(req.body.question.next, 9);
+      let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1; //9 
+      let newHead = Math.min(req.body.question.next, 9); // 0
 
       if (newNext === newHead) {
         if (newHead !== 9) {
@@ -164,7 +164,7 @@ router.put("/:id", (req, res, next) => {
 
       if (question) {
         if (question.next === 9 && newNext === 9) {
-          question.next = Math.floor(math.random() * 10);
+          newHead = Math.floor(math.random() * 10);
         } else {
           question.next = req.body.head;
         }
