@@ -166,7 +166,12 @@ router.put("/:id", (req, res, next) => {
         });
 
         if (question){
-          question.next = req.body.head;
+          if (question.next === 9 && newNext === 9) {
+            question.next = 0;
+          }
+          else {
+            question.next = req.body.head;
+          }
         }
 
         questions[req.body.head].next = newNext;
