@@ -153,7 +153,12 @@ router.put("/:id", (req, res, next) => {
         let newHead = Math.min(req.body.question.next, 9);
 
         if (newNext === newHead) {
-          newHead = newHead + 1;
+          if (newHead !== 9) {
+            newHead = newHead + 1;
+          }
+          else {
+            newHead = 0;
+          }
         }
     
         let question = questions.find(item => {
@@ -202,6 +207,9 @@ router.put("/:id", (req, res, next) => {
       let questions = oldData.questions;
       let newNext = 2;
       let newHead = Math.min(oldData.questions[oldData.head].next, 9);
+      if (newNext === newHead) {
+          newHead = newHead + 1;
+      }
       questions.forEach(item => {
         if (item.next === newNext) {
           item.next = req.body.head;
