@@ -15,7 +15,7 @@ router.get("/", (req, res, next) => {
       let results = response[0];
       let q = results.head;
       if (q > 9 || q < 0) {
-        q = Math.floor(Math.random() * 10)
+        q = Math.floor(Math.random() * 10);
       }
       return {
         correct: results.correct,
@@ -145,95 +145,42 @@ router.put("/:id", (req, res, next) => {
   // replace that items next with original questions position in the array
 
   if (req.body.correct === "1" || req.body.correct === 1) {
+    Stat.findOne({ userId: userId }).then(oldData => {
+      let questions = oldData.questions;
+      let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
+      let newHead = Math.min(req.body.question.next, 9);
 
-    Stat.findOne({ userId: userId })
-      .then(oldData => {
-        let questions = oldData.questions;
-        let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
-        let newHead = Math.min(req.body.question.next, 9);
-
-        if (newNext === newHead) {
-          if (newHead !== 9) {
-            newHead = newHead + 1;
-          }
-          else {
-            newHead = 0;
-          }
+      if (newNext === newHead) {
+        if (newHead !== 9) {
+          newHead = newHead + 1;
+        } else {
+          newHead = 0;
         }
-    
-        let question = questions.find(item => {
-            return item.next === newNext;
-        });
+      }
 
-        if (question){
-          if (question.next === 9 && newNext === 9) {
+      let question = questions.find(item => {
+        return item.next === newNext;
+      });
+
+      if (question) {
+        if (question.next === 9 && newNext === 9) {
+          if (req.body.head === 0) {
+            question.next === 1;
+          } else {
             question.next = 0;
           }
-          else {
-            question.next = req.body.head;
-          }
+        } else {
+          question.next = req.body.head;
         }
-
-        questions[req.body.head].next = newNext;
-        questions[req.body.head].memoryStrength = questions[req.body.head].memoryStrength * 2;
-
-        let newObj = {
-          correct: oldData.correct + 1,
-          incorrect: oldData.incorrect,
-          questions,
-          head: newHead,
-          userId: oldData.userId,
-          username: oldData.username
-        };
-
-        Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
-          .then(results => {
-            res.json(results);
-          }) .then(() => {
-
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      });
-      
-
-    // array position  === head
-    // new m value and next for that position
-    // if correct,  m === old m + 1, next === m + 1
-    // if incorrect, m === 1, next === m + 1 (2), change B's next to 0
-    // new next for a different changed position
-
-  }
-  if (req.body.incorrect === "1" || req.body.incorrect === 1) {
-    Stat.find({ userId: userId })
-    .then(results => {
-      let oldData = results[0];
-      let questions = oldData.questions;
-      let newNext = 2;
-      let newHead = Math.min(oldData.questions[oldData.head].next, 9);
-      if (newNext === newHead) {
-          newHead = newHead + 1;
       }
-      questions.forEach(item => {
-        if (item.next === newNext) {
-          item.next = req.body.head;
-          return;
-        }
-      });
+
       questions[req.body.head].next = newNext;
-      questions[req.body.head].memoryStrength = 1;
-      return {
-        oldData,
-        questions,
-        newHead
-      };
-    })
-    .then((results) => {
-      const { oldData, questions, newHead } = results;
+      questions[req.body.head].memoryStrength =
+        questions[req.body.head].memoryStrength * 2;
+
       let newObj = {
-        correct: oldData.correct,
-        incorrect: oldData.incorrect + 1,
+        correct: oldData.correct + 1,
+        incorrect: oldData.incorrect,
         questions,
         head: newHead,
         userId: oldData.userId,
@@ -243,13 +190,63 @@ router.put("/:id", (req, res, next) => {
       Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
         .then(results => {
           res.json(results);
-        }) .then(() => {
-
         })
+        .then(() => {})
         .catch(err => {
           console.log(err);
         });
     });
+
+    // array position  === head
+    // new m value and next for that position
+    // if correct,  m === old m + 1, next === m + 1
+    // if incorrect, m === 1, next === m + 1 (2), change B's next to 0
+    // new next for a different changed position
+  }
+  if (req.body.incorrect === "1" || req.body.incorrect === 1) {
+    Stat.find({ userId: userId })
+      .then(results => {
+        let oldData = results[0];
+        let questions = oldData.questions;
+        let newNext = 2;
+        let newHead = Math.min(oldData.questions[oldData.head].next, 9);
+        if (newNext === newHead) {
+          newHead = newHead + 1;
+        }
+        questions.forEach(item => {
+          if (item.next === newNext) {
+            item.next = req.body.head;
+            return;
+          }
+        });
+        questions[req.body.head].next = newNext;
+        questions[req.body.head].memoryStrength = 1;
+        return {
+          oldData,
+          questions,
+          newHead
+        };
+      })
+      .then(results => {
+        const { oldData, questions, newHead } = results;
+        let newObj = {
+          correct: oldData.correct,
+          incorrect: oldData.incorrect + 1,
+          questions,
+          head: newHead,
+          userId: oldData.userId,
+          username: oldData.username
+        };
+
+        Stat.findOneAndUpdate({ userId: id }, newObj, { new: true })
+          .then(results => {
+            res.json(results);
+          })
+          .then(() => {})
+          .catch(err => {
+            console.log(err);
+          });
+      });
   }
 });
 
