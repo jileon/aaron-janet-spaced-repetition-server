@@ -14,6 +14,9 @@ router.get("/", (req, res, next) => {
     .then(response => {
       let results = response[0];
       let q = results.head;
+      if (q > 9 || q < 0) {
+        q = Math.floor(Math.random() * 10)
+      }
       return {
         correct: results.correct,
         incorrect: results.incorrect,
