@@ -164,11 +164,7 @@ router.put("/:id", (req, res, next) => {
 
       if (question) {
         if (question.next === 9 && newNext === 9) {
-          if (req.body.head === 0) {
-            question.next === 1;
-          } else {
-            question.next = 0;
-          }
+          question.next = Math.floor(math.random() * 10);
         } else {
           question.next = req.body.head;
         }
