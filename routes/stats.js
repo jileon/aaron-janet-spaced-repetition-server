@@ -34,7 +34,6 @@ router.get("/", (req, res, next) => {
 //   original q, memory * 2 and next is m + 1
 //   position 2, change next to position of original q
 
-
 router.post("/", (req, res, next) => {
   const newObj = {
     correct: 0,
@@ -148,7 +147,7 @@ router.put("/:id", (req, res, next) => {
       .then(oldData => {
         let questions = oldData.questions;
         let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1;
-        let newHead = req.body.question.next;
+        let newHead = Math.min(req.body.question.next, 9);
 
         if (newNext === newHead) {
           newHead = newHead + 1;
@@ -199,7 +198,7 @@ router.put("/:id", (req, res, next) => {
       let oldData = results[0];
       let questions = oldData.questions;
       let newNext = 2;
-      let newHead = oldData.questions[oldData.head].next;
+      let newHead = Math.min(oldData.questions[oldData.head].next, 9);
       questions.forEach(item => {
         if (item.next === newNext) {
           item.next = req.body.head;
