@@ -149,7 +149,7 @@ router.put("/:id", (req, res, next) => {
       let questions = oldData.questions;
       let newNext = Math.min(req.body.question.memoryStrength * 2, 8) + 1; //9 
       let newHead = Math.min(req.body.question.next, 9); // 0
-
+      
       if (newNext === newHead) {
         if (newHead !== 9) {
           newHead = newHead + 1;
@@ -164,7 +164,7 @@ router.put("/:id", (req, res, next) => {
 
       if (question) {
         if (question.next === 9 && newNext === 9) {
-          newHead = Math.floor(math.random() * 10);
+          newHead = Math.floor(Math.random() * 10);
         } else {
           question.next = req.body.head;
         }
