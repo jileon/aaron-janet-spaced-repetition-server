@@ -59,7 +59,7 @@ Client repo can be found here https://github.com/thinkful-ei24/aaron-janet-space
 
 ```text
 
-├── /login/auth
+├── /login
 │   └── POST
 │       ├── /
 │       └── /refresh
@@ -74,4 +74,155 @@ Client repo can be found here https://github.com/thinkful-ei24/aaron-janet-space
 │   └── POST
 │       ├── /
 
+```
+
+### POST `/login/`
+
+```js
+// res.body
+{
+  username: String,
+  password: String
+}
+```
+
+### POST `/login/refresh`
+
+```js
+// req.header
+Authorization: Bearer ${token}
+// res.body
+
+{
+  authToken: ${token}
+}
+```
+
+### GET `/stats/`
+
+```js
+
+userID: req.user.id
+
+// req.header
+Authorization: Bearer ${token}
+
+// res.body
+{
+    correct: Integer,
+    incorrect: Integer,
+    question: {
+        question: String,
+        answer: String,
+        memoryStrength: Integer,
+        next: Integer,
+        _id: String
+    },
+    head: Integer,
+    userId: String
+}
+```
+
+### GET `/stats/`
+
+```js
+
+userID: req.user.id
+
+// req.header
+Authorization: Bearer ${token}
+
+// res.body
+{
+    correct: Integer,
+    incorrect: Integer,
+    question: {
+        question: String,
+        answer: String,
+        memoryStrength: Integer,
+        next: Integer,
+        _id: String
+    },
+    head: Integer,
+    userId: String
+}
+```
+
+### POST `/stats`
+
+Use this endpoint to seed your database.
+This enpoind is not used on the client side.
+
+```js
+// req.header
+Authorization: Bearer ${token}
+
+// req.body
+{
+username: String,
+password: String,
+userId: String
+}
+
+// res.body
+{
+head: Integer,
+correct: Integer,
+incorrect: Integer,
+questions: Array,
+userId: String,
+username: String,
+createdAt: String
+updatedAt: String,
+id: String
+}
+```
+
+### PUT `/:id`
+
+```js
+// req.header
+Authorization: Bearer ${token}
+
+// req.params.id
+id: String
+
+// req.user
+userId: String
+// req.body
+{
+
+    userId: "5c333005ea87b13f1680114a",
+    correct: Integer,
+    incorrect: Integer,
+    head: Integer,
+    question:{
+    answer: String,
+    memoryStrength: Integer,
+    next: Integer,
+    question: String
+    _id: String
+}
+}
+
+// res.body
+{
+    head: Integer,
+    correct: Integer,
+    incorrect: Integer,
+    questions: [
+        {
+            question: String,
+            answer: String,
+            memoryStrength: Integer,
+            next: Integer,
+            _id: String
+        }
+    ],
+    userId: String,
+    username: String,
+    createdAt: String,
+    updatedAt: String,
+    id: String
+}
 ```
