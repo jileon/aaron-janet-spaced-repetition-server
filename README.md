@@ -1,45 +1,77 @@
-# Thinkful Backend Template
+# Learning Spanish
 
-A template for developing and deploying Node.js apps.
+This is the server repo for https://learn-spanish-app.herokuapp.com
 
-## Getting started
+This is an application where you can learn some simple words in Spanish.
 
-### Setting up a project
+- You start with a Spanish word, and try to enter it's English equivalent
+- If you get it right, great! Your stats will reflect your good work
+- If you get it wrong, no worries! You'll have plenty of opportunities to redeem yourself
 
-* Move into your projects directory: `cd ~/YOUR_PROJECTS_DIRECTORY`
-* Clone this repository: `git clone https://github.com/Thinkful-Ed/backend-template YOUR_PROJECT_NAME`
-* Move into the project directory: `cd YOUR_PROJECT_NAME`
-* Install the dependencies: `npm install`
-* Create a new repo on GitHub: https://github.com/new
-    * Make sure the "Initialize this repository with a README" option is left unchecked
-* Update the remote to point to your GitHub repository: `git remote set-url origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME`
+# Creators
 
-### Working on the project
+- This application was built by full-stack developers Janet Leon and Aaron Whitehead
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Run the development task: `npm start`
-    * Starts a server running at http://localhost:8080
-    * Automatically restarts when any of your files change
+- It was built in one week using a spaced repetition algorithm
+- Although we both worked on both the front and back end, Janet's primary focus was on the front-end and Aaron's on the back-end
 
-## Databases
+- You can find more of Janet's work and contact information here: https://iamjanetleon.com
+- You can find more of Aaron's work and contact information here: https://aaron-whitehead.herokuapp.com
 
-By default, the template is configured to connect to a MongoDB database using Mongoose.  It can be changed to connect to a PostgreSQL database using Knex by replacing any imports of `db-mongoose.js` with imports of `db-knex.js`, and uncommenting the Postgres `DATABASE_URL` lines in `config.js`.
+# How do I play?
 
-## Deployment
+- Both the client and the server are live on Heroku.
+- You can play here: https://learn-spanish-app.herokuapp.com
+- Beware, the page might require a refresh, as it's using free dynos.
+- You can create your own account, or use our demo account!
+- Username: test
+- Password: password123
 
-Requires the [Heroku CLI client](https://devcenter.heroku.com/articles/heroku-command-line).
+If you do create your own account:
 
-### Setting up the project on Heroku
+- Check out your stats by clicking on 'stats' on the computer screen
+- Can you get more right than you get wrong?
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Create the Heroku app: `heroku create PROJECT_NAME`
+# Technology Stacks
 
-* If your backend connects to a database, you need to configure the database URL:
-    * For a MongoDB database: `heroku config:set DATABASE_URL=mongodb://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
-    * For a PostgreSQL database: `heroku config:set DATABASE_URL=postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
+- [React](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://mongodb.com/)
+- [mongoose](https://mongoosejs.com/)
 
-* If you are creating a full-stack app, you need to configure the client origin: `heroku config:set CLIENT_ORIGIN=https://www.YOUR_DEPLOYED_CLIENT.com`
+### Installation
 
-### Deploying to Heroku
+If you want to clone this repo and make changes for yourself, make sure you npm install in your terminal :)
 
-* Push your code to Heroku: `git push heroku master`
+Client repo can be found here https://github.com/thinkful-ei24/aaron-janet-spaced-repetition-client
+
+### Code
+
+- Disclaimer: This will be actively updated to clean the code up.
+- All of our actions are in the actions folder.
+- All of our reducers are in the reducers folder.
+- All of our components are in the components folder.
+- All of the CSS files, except for index.css, are located as ./src/components/css
+
+## API Overview
+
+```text
+
+├── /login/auth
+│   └── POST
+│       ├── /
+│       └── /refresh
+├── /stats
+│   └── GET
+│       └── /
+│   └── PUT
+│       └── /:id
+│   └── POST
+│       └── /
+├── /users
+│   └── POST
+│       ├── /
+
+```
