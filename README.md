@@ -226,3 +226,19 @@ userId: String
     id: String
 }
 ```
+
+### POST `/users/`
+
+```js
+// req.body
+{
+   username:String,
+   password:String
+}
+
+// res.body
+{
+   username:String,
+   id:String
+}
+```
